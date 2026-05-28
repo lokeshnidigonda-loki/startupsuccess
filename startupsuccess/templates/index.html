@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Startup Success Predictor</title>
+</head>
+
+<body>
+
+    <h1>Startup Success Prediction Using ML</h1>
+
+    <form action="/predict" method="post">
+
+        <label>Funding Amount:</label><br>
+        <input type="number" name="funding" required><br><br>
+
+        <label>Team Size:</label><br>
+        <input type="number" name="team_size" required><br><br>
+
+        <button type="submit">Predict</button>
+
+    </form>
+
+    <br>
+
+    <h2>{{ prediction_text }}</h2>
+
+</body>
+
+</html>
