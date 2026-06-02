@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Success Venture Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --surface-bg: linear-gradient(135deg, #090d16 0%, #0b0f19 100%);
+            --panel-glass: rgba(17, 24, 39, 0.7);
+            --neon-accent: #6366f1;
+            --neon-glow: rgba(99, 102, 241, 0.25);
+            --text-heading: #ffffff;
+            --text-body: #94a3b8;
+            --emerald-glow: #10b981;
+            --rose-glow: #f43f5e;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--surface-bg); min-height: 100vh; display: flex; justify-content: center; align-items: center; color: var(--text-heading); padding: 24px; }
+        
+        .app-wrapper {
+            width: 100%;
+            max-width: 520px;
+            background: var(--panel-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 28px;
+            padding: 44px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5), 0 0 40px var(--neon-glow);
+        }
+
+        .dashboard-header { text-align: center; margin-bottom: 36px; }
+        .dashboard-header h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; background: linear-gradient(to right, #fff, #cbd5e1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 6px; }
+        .dashboard-header p { color: var(--text-body); font-size: 13px; }
+
+        .form-row { margin-bottom: 22px; }
+        .form-row label { display: block; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--text-body); margin-bottom: 8px; }
+        .form-row input { width: 100%; background: rgba(10, 15, 26, 0.8); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 14px 18px; font-size: 14px; color: var(--text-heading); outline: none; transition: all 0.2s ease; }
+        .form-row input:focus { border-color: var(--neon-accent); box-shadow: 0 0 14px rgba(99, 102, 241, 0.35); }
+
+        .cta-btn { width: 100%; background: var(--neon-accent); color: white; font-size: 15px; font-weight: 600; padding: 16px; border: none; border-radius: 14px; cursor: pointer; box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3); transition: all 0.25s ease; margin-top: 10px; }
+        .cta-btn:hover { background: #4f46e5; transform: translateY(-1px); box-shadow: 0 6px 24px rgba(99, 102, 241, 0.45); }
+
+        .analytics-response { margin-top: 36px; padding: 22px; border-radius: 18px; background: rgba(8, 12, 21, 0.5); border: 1px solid rgba(255, 255, 255, 0.04); text-align: center; }
+        .analytics-response h2 { font-size: 11px; font-weight: 600; color: var(--text-body); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .metric-status { font-size: 17px; font-weight: 700; }
+        .metric-conf { font-size: 13px; color: var(--text-body); margin-top: 4px; }
+        
+        .status-pass { color: var(--emerald-glow); text-shadow: 0 0 15px rgba(16, 185, 129, 0.25); }
+        .status-fail { color: var(--rose-glow); text-shadow: 0 0 15px rgba(244, 63, 94, 0.25); }
+    </style>
+</head>
+<body>
+
+    <div class="app-wrapper">
+        <div class="dashboard-header">
+            <h1>VENTURE ANALYTICS</h1>
+            <p>Predicting Startup Success via Quantifiable Data Metrics</p>
+        </div>
+
+        <form action="/predict" method="post">
+            <div class="form-row">
+                <label>Total Venture Funding (USD)</label>
+                <input type="number" name="funding" required placeholder="e.g. 500000">
+            </div>
+
+            <div class="form-row">
+                <label>Active Core Team Count</label>
+                <input type="number" name="team_size" required placeholder="e.g. 12">
+            </div>
+            
+            <div class="form-row">
+                <label>Quarterly Scale Growth Rate (%)</label>
+                <input type="number" step="any" name="growth_rate" required placeholder="e.g. 45.2">
+            </div>
+
+            <div class="form-row">
+                <label>NLP Sentiment Vector Index (-1.0 to 1.0)</label>
+                <input type="number" step="any" name="sentiment_score" required placeholder="e.g. 0.68">
+            </div>
+            
+            <button type="submit" class="cta-btn">Compute Success Evaluation</button>
+        </form>
+
+        {% if prediction_status %}
+            <div class="analytics-response">
+                <h2>Predictive System Output</h2>
+                <p class="metric-status {% if 'High Success' in prediction_status %}status-pass{% else %}status-fail{% endif %}">
+                    {{ prediction_status }}
+                </p>
+                {% if confidence_score %}
+                    <p class="metric-conf">Pipeline Inference Confidence: <strong>{{ confidence_score }}</strong></p>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+
+</body>
+</html>
